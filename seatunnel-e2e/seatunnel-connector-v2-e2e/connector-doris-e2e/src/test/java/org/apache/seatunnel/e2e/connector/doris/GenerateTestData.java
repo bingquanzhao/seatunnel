@@ -59,16 +59,12 @@ public class GenerateTestData {
     }
 
     public static BigInteger genBigInteger(int bits) {
-        if (bits > 128) bits = 128;
+        if (bits > 127) bits = 127;
         return new BigInteger(bits, ThreadLocalRandom.current());
     }
 
     public static Long genBigint() {
         return ThreadLocalRandom.current().nextLong();
-    }
-
-    public static BigInteger genBigInteger() {
-        return new BigInteger(128, ThreadLocalRandom.current());
     }
 
     public static String genDatetimeString(boolean withNano) {
