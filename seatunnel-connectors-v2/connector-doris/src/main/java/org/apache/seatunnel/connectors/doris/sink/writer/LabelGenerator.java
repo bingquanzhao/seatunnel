@@ -17,6 +17,8 @@
 
 package org.apache.seatunnel.connectors.doris.sink.writer;
 
+import java.util.UUID;
+
 /** Generator label for stream load. */
 public class LabelGenerator {
     private String labelPrefix;
@@ -31,5 +33,9 @@ public class LabelGenerator {
         return enable2PC
                 ? labelPrefix + "_" + chkId
                 : labelPrefix + "_" + System.currentTimeMillis();
+    }
+
+    public String generateBatchLabel() {
+        return labelPrefix + "_" + UUID.randomUUID();
     }
 }

@@ -27,13 +27,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Properties;
 
 @Setter
 @Getter
 @ToString
-public class DorisConfig {
+public class DorisConfig implements Serializable {
     public static final int DORIS_TABLET_SIZE_MIN = 1;
     public static final int DORIS_TABLET_SIZE_DEFAULT = Integer.MAX_VALUE;
     public static final int DORIS_REQUEST_CONNECT_TIMEOUT_MS_DEFAULT = 30 * 1000;
@@ -182,6 +183,32 @@ public class DorisConfig {
                             "The parameter of the Stream Load data_desc. "
                                     + "The way to specify the parameter is to add the prefix `doris.config` to the original load parameter name ");
 
+    public static final Option<Long> BUFFER_FLUSH_INTERVAL_MS =
+            Options.key("sink.buffer_flush_interval_ms")
+                    .longType()
+                    .defaultValue(10000L)
+                    .withDescription("Batch sink flush interval ,unit : ms");
+
+    public static final Option<Integer> BUFFER_FLUSH_MAX_ROWS =
+            Options.key("sink.buffer_flush_max_rows")
+                    .intType()
+                    .defaultValue(50000)
+                    .withDescription("batch sink flush max rows");
+
+    public static final Option<Integer> BUFFER_FLUSH_MAX_BYTES =
+            Options.key("sink.buffer_flush_max_bytes")
+                    .intType()
+                    .defaultValue(10 * 1024 * 1024)
+                    .withDescription("batch sink flush max bytes");
+
+    public static final Option<Integer> FLUSH_QUEUE_SIZE =
+            Options.key("sink.flush_queue_size")
+                    .intType()
+                    .defaultValue(2)
+                    .withDescription("batch sink flush max bytes");
+
+
+
     // common option
     private String frontends;
     private String username;
@@ -211,6 +238,10 @@ public class DorisConfig {
     private Integer bufferSize;
     private Integer bufferCount;
     private Properties streamLoadProps;
+    private int flushQueueSize;
+    private long bufferFlushIntervalMs;
+    private int bufferFlushMaxRows ;
+    private int bufferFlushMaxBytes ;
 
     public static DorisConfig loadConfig(Config pluginConfig) {
         DorisConfig dorisConfig = new DorisConfig();
@@ -313,6 +344,30 @@ public class DorisConfig {
             dorisConfig.setEnableDelete(pluginConfig.getBoolean(SINK_ENABLE_DELETE.key()));
         } else {
             dorisConfig.setEnableDelete(SINK_ENABLE_DELETE.defaultValue());
+        }
+        if (pluginConfig.hasPath(BUFFER_FLUSH_INTERVAL_MS.key())){
+            if (pluginConfig.getLong(BUFFER_FLUSH_INTERVAL_MS.key())>1000L){
+                dorisConfig.setBufferFlushIntervalMs(pluginConfig.getLong(BUFFER_FLUSH_INTERVAL_MS.key()));
+            }else{
+                dorisConfig.setBufferFlushIntervalMs(BUFFER_FLUSH_INTERVAL_MS.defaultValue());
+            }
+        }else{
+            dorisConfig.setBufferFlushIntervalMs(BUFFER_FLUSH_INTERVAL_MS.defaultValue());
+        }
+        if (pluginConfig.hasPath(BUFFER_FLUSH_MAX_ROWS.key())){
+            dorisConfig.setBufferFlushMaxRows(pluginConfig.getInt(BUFFER_FLUSH_MAX_ROWS.key()));
+        }else{
+            dorisConfig.setBufferFlushMaxRows(BUFFER_FLUSH_MAX_ROWS.defaultValue());
+        }
+        if (pluginConfig.hasPath(BUFFER_FLUSH_MAX_BYTES.key())){
+            dorisConfig.setBufferFlushMaxBytes(pluginConfig.getInt(BUFFER_FLUSH_MAX_BYTES.key()));
+        }else {
+            dorisConfig.setBufferFlushMaxBytes(BUFFER_FLUSH_MAX_BYTES.defaultValue());
+        }
+        if (pluginConfig.hasPath(FLUSH_QUEUE_SIZE.key())){
+            dorisConfig.setFlushQueueSize(pluginConfig.getInt(FLUSH_QUEUE_SIZE.key()));
+        }else {
+            dorisConfig.setFlushQueueSize(FLUSH_QUEUE_SIZE.defaultValue());
         }
         return dorisConfig;
     }
