@@ -22,7 +22,13 @@ import org.apache.seatunnel.common.exception.SeaTunnelErrorCode;
 public enum DorisConnectorErrorCode implements SeaTunnelErrorCode {
     STREAM_LOAD_FAILED("Doris-01", "stream load error"),
     COMMIT_FAILED("Doris-02", "commit error"),
-    REST_SERVICE_FAILED("Doris-03", "rest service error");
+    REST_SERVICE_FAILED("Doris-03", "rest service error"),
+    CHECK_FLUSH_ERROR("Doris-11","doris batch sink flush error"),
+
+    BATCH_LOAD_ERROR("Doris-12","doris batch load error"),
+
+    GET_AVAILABLE_BE ("Doris-12","get be error"),
+    BATCH_LOAD_INTERRUPTED_ERROR("Doris-13", "doris batch load interrupted error");
 
     private final String code;
     private final String description;

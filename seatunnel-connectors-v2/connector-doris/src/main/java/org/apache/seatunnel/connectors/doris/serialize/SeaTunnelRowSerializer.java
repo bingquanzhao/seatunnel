@@ -17,6 +17,7 @@
 
 package org.apache.seatunnel.connectors.doris.serialize;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.seatunnel.api.table.type.RowKind;
 import org.apache.seatunnel.api.table.type.SeaTunnelRow;
 import org.apache.seatunnel.api.table.type.SeaTunnelRowType;
