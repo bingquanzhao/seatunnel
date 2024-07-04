@@ -604,7 +604,16 @@ public class RowBatch {
                     if (listVectorObject.get(0) instanceof Text) {
                         return listVectorObject.stream()
                                 .map(x -> getDataFromVector(x, finalEleSqlType))
-                                .toArray(String[]::new);
+                                .toArray(
+                                        size -> {
+                                            if (finalEleSqlType.equals(SqlType.DATE)) {
+                                                return new LocalDate[size];
+                                            } else if (finalEleSqlType.equals(SqlType.TIMESTAMP)) {
+                                                return new LocalDateTime[size];
+                                            } else {
+                                                return new String[size];
+                                            }
+                                        });
                     }
 
                     if (listVectorObject.get(0) instanceof BigDecimal) {

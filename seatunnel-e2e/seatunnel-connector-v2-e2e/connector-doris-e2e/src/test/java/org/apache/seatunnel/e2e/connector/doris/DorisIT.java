@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -678,24 +677,20 @@ public class DorisIT extends AbstractDorisIT {
                                 GenerateTestData.genDateString(),
                                 GenerateTestData.genJsonString(),
                                 GenerateTestData.genJsonString(),
-                                (new boolean[] {true, true, false}).toString(),
-                                (new int[] {1, 2, 3}).toString(),
-                                (new int[] {1, 2, 3}).toString(),
-                                (new int[] {1, 2, 3}).toString(),
-                                (new long[] {1L, 2L, 3L}).toString(),
-                                (new float[] {1.0F, 1.0F, 1.0F}).toString(),
-                                (new double[] {1.0, 1.0, 1.0}).toString(),
-                                (new String[] {"1", "1"}).toString(),
-                                (new String[] {"1", "1"}).toString(),
-                                (new String[] {"1", "1"}).toString(),
-                                (new String[] {"1", "1"}).toString(),
-                                (new BigDecimal[] {
-                                            new BigDecimal("10.02"), new BigDecimal("10.03")
-                                        })
-                                        .toString(),
-                                (new String[] {"2020-06-09", "2020-06-10"}).toString(),
-                                (new String[] {"2020-06-09 12:02:02", "2020-06-10 12:02:02"})
-                                        .toString()
+                                ("[true, true, false]"),
+                                ("[1, 2, 3]"),
+                                ("[1,2,3]"),
+                                ("[1,2,3]"),
+                                ("[1,2,3]"),
+                                ("[1.0,1.0,1.0]"),
+                                ("[1.0, 1.0, 1.0]"),
+                                ("[\"1\",\"1\"]"),
+                                ("[\"1\",\"1\"]"),
+                                ("[\"1\",\"1\"]"),
+                                ("[\"1\",\"1\"]"),
+                                ("[10.02,10.03]"),
+                                ("[2020-06-09,2020-06-10]"),
+                                ("[2020-06-09 12:02:02, 2020-06-10 12:02:02]")
                             }));
         }
         log.info("generate test data succeed");
